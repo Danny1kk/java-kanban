@@ -1,15 +1,13 @@
 package tasks;
 
-import java.net.StandardSocketOptions;
 
 public class Task {
-    private Long id;
-    private String name;
-    private String description;
-    private TaskStatus taskStatus;
+    protected Long id;
+    protected String name;
+    protected String description;
+    protected TaskStatus taskStatus;
 
-    public Task(Long id, String name, String description, TaskStatus taskStatus) {
-        this.id = id;
+    public Task(String name, String description, TaskStatus taskStatus) {
         this.name = name;
         this.description = description;
         this.taskStatus = taskStatus;
@@ -31,6 +29,14 @@ public class Task {
         return description;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public TaskStatus getTaskStatus() {
         return taskStatus;
     }
@@ -42,7 +48,6 @@ public class Task {
     @Override
     public String toString() {
         return "Task{" +
-                "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", taskStatus=" + taskStatus +

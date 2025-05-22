@@ -9,19 +9,21 @@ public class Main {
         TaskManager taskManager = new TaskManager();
 
         System.out.println("Создание задач:");
-        Task task1 = new Task(null, "Убрать в квартире", "Начать с кухни", TaskStatus.NEW);
-        Task task2 = new Task(null, "Встреча с друзьями", "Позвонить и уточнить на счет встречи", TaskStatus.IN_PROGRESS);
+        Task task1 = new Task("Убрать в квартире", "Начать с кухни", TaskStatus.NEW);
+        taskManager.createTask(task1);
+        Task task2 = new Task("Встреча с друзьями", "Позвонить и уточнить на счет встречи", TaskStatus.IN_PROGRESS);
+        taskManager.createTask(task2);
         System.out.println();
 
         System.out.println("Эпик с одной подзадачей:");
-        Epic epic1 = new Epic(null, "Пойти в кино", "Посмотреть новый фильм вечером");
-        Subtask subtask1 = new Subtask(null, "Выбрать день недели", "Собраться с друзьями в кино", TaskStatus.NEW, epic1.getId());
+        Epic epic1 = new Epic("Пойти в кино", "Посмотреть новый фильм вечером");
+        Subtask subtask1 = new Subtask("Выбрать день недели", "Собраться с друзьями в кино", TaskStatus.NEW, epic1.getId());
         System.out.println();
 
         System.out.println("Эпик с двумя подзадачами:");
-        Epic epic2 = new Epic(null, "Подготовка к отпуску", "Собрать всё необходимое");
-        Subtask subtask2 = new Subtask(null, "Купить билеты", "На самолёт туда и обратно", TaskStatus.NEW, epic2.getId());
-        Subtask subtask3 = new Subtask(null, "Собрать вещи", "Одежда, техника", TaskStatus.IN_PROGRESS, epic2.getId());
+        Epic epic2 = new Epic("Подготовка к отпуску", "Собрать всё необходимое");
+        Subtask subtask2 = new Subtask("Купить билеты", "На самолёт туда и обратно", TaskStatus.NEW, epic2.getId());
+        Subtask subtask3 = new Subtask("Собрать вещи", "Одежда, техника", TaskStatus.IN_PROGRESS, epic2.getId());
         System.out.println();
 
         System.out.println();
