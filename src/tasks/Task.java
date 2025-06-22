@@ -1,23 +1,25 @@
 package tasks;
 
 
+import org.junit.jupiter.api.Test;
+
 public class Task {
-    protected Long id;
+    protected int id;
     protected String name;
     protected String description;
-    protected TaskStatus taskStatus;
+    protected TaskStatus status;
 
-    public Task(String name, String description, TaskStatus taskStatus) {
+    public Task(String name, String description) {
         this.name = name;
         this.description = description;
-        this.taskStatus = taskStatus;
+        this.status = TaskStatus.NEW;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -29,42 +31,16 @@ public class Task {
         return description;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public TaskStatus getStatus() {
+        return status;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public TaskStatus getTaskStatus() {
-        return taskStatus;
-    }
-
-    public void setTaskStatus(TaskStatus taskStatus) {
-        this.taskStatus = taskStatus;
+    public void setStatus(TaskStatus status) {
+        this.status = status;
     }
 
     @Override
     public String toString() {
-        return "Task{" +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", taskStatus=" + taskStatus +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-
-        Task task = (Task) obj;
-        return id != null && id.equals(task.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return super.hashCode();
+        return id + ": " + name + " [" + status + "]";
     }
 }
