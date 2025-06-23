@@ -1,6 +1,6 @@
-import org.junit.jupiter.api.Test;
+package managers;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 class TaskManagerTest {
 
@@ -17,15 +17,15 @@ class TaskManagerTest {
     }
 
     @Test
-    void getAllTasks() {
+    void getTasks() {
     }
 
     @Test
-    void getAllEpics() {
+    void getEpics() {
     }
 
     @Test
-    void getAllSubtask() {
+    void getSubtask() {
     }
 
     @Test
