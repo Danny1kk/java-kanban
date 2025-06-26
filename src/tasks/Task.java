@@ -1,10 +1,5 @@
 package tasks;
 
-
-import org.junit.jupiter.api.Test;
-
-import java.util.ArrayList;
-
 public class Task {
     protected int id;
     protected String name;
@@ -29,6 +24,10 @@ public class Task {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -44,11 +43,5 @@ public class Task {
     @Override
     public String toString() {
         return id + ": " + name + " [" + status + "]";
-    }
-
-    public void setSubtaskIds(ArrayList<Integer> subtaskIds) {
-    }
-
-    public void getName(String updatedTask) {
     }
 }
