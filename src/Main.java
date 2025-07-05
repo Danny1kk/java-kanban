@@ -1,12 +1,16 @@
 import tasks.Epic;
 import tasks.Subtask;
+import tasks.Task;
 import tasks.TaskStatus;
 
 public class Main {
 
     public static void main(String[] args) {
-       TaskManager manager = new TaskImplimentation();
+       TaskManager manager = Managers.getDefault();
 
+        Task task = new Task("Убраться", "В комнате и на кухне");
+        manager.addTask(task);
+        System.out.println(manager.getAllSubtasks());
         System.out.println("Эпик с двумя подзадачами: ");
         Epic epic = new Epic("Подготовка к отпуску", "Собрать всё необходимое");
         manager.addEpic(epic);
@@ -35,6 +39,8 @@ public class Main {
         System.out.println();
         System.out.println("Эпик, после выполнения всех подзадач: ");
         System.out.println(manager.getEpic(epic.getId()));
+        System.out.println("История просмотров: ");
+        System.out.println(manager.getHistory());
         System.out.println();
     }
 }

@@ -12,10 +12,6 @@ public class Subtask extends Task {
         return epicId;
     }
 
-    public void setName(String name) {
-        super.setName(name);
-    }
-
     @Override
     public String toString() {
         return id + ": " + name + "[ " + status + " ] (Epic: " + epicId + ")";
