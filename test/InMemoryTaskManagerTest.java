@@ -1,7 +1,12 @@
+package test;
 
+
+import manager.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import tasks.*;
+import tasks.Epic;
+import tasks.Subtask;
+import tasks.Task;
 
 import java.util.List;
 
@@ -65,11 +70,12 @@ class InMemoryTaskManagerTest {
         assertTrue(updatedEpic.getSubtaskIds().contains(subtask.getId()));
     }
 
+
     @Test
     void deleteTaskById() {
         Task task = new Task("Задача", "Описание");
         manager.addTask(task);
-        manager.deleteAllTasks(task.getId());
+        manager.deleteAllTasks();
 
         assertNull(manager.getTask(task.getId()));
     }
@@ -82,7 +88,7 @@ class InMemoryTaskManagerTest {
         Subtask subtask = new Subtask("Сабтаск", "Описание", epic.getId());
         manager.addSubtask(subtask);
 
-        manager.deleteAllEpics(epic.getId());
+        manager.removeEpic(epic.getId());
 
         assertNull(manager.getEpic(epic.getId()));
         assertNull(manager.getSubtask(subtask.getId()));
@@ -96,7 +102,7 @@ class InMemoryTaskManagerTest {
         Subtask subtask = new Subtask("Сабтаск", "Описание", epic.getId());
         manager.addSubtask(subtask);
 
-        manager.deleteAllSubtasks(subtask.getId());
+        manager.removeSubtask(subtask.getId());
 
         assertNull(manager.getSubtask(subtask.getId()));
         assertFalse(manager.getEpic(epic.getId()).getSubtaskIds().contains(subtask.getId()));
