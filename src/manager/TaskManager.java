@@ -1,3 +1,5 @@
+package manager;
+
 import tasks.Epic;
 import tasks.Subtask;
 import tasks.Task;
@@ -10,9 +12,9 @@ public interface TaskManager {
     List<Epic> getAllEpics();
     List<Subtask> getAllSubtasks();
 
-    void deleteAllTasks(int id);
-    void deleteAllEpics(int id);
-    void deleteAllSubtasks(int id);
+    void deleteAllTasks();
+    void deleteAllEpics();
+    void deleteAllSubtasks();
 
     Task getTask(int id);
     Epic getEpic(int id);
@@ -26,11 +28,11 @@ public interface TaskManager {
     void updateSubtask(Subtask subtask);
     void updateEpic(Epic epic);
 
-    void deleteTask(int id);
-    void deleteEpic(int id);
-    void deleteSubtask(int id);
-
     List<Subtask> getEpicSubtasks(int id);
 
     List<Task> getHistory();
+
+    void removeTask(int id);
+    void removeEpic(int id);
+    void removeSubtask(int id);
 }
