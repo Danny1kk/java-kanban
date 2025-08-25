@@ -14,7 +14,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     protected void save() {
-        try(Writer writer = new FileWriter(file)) {
+        try (Writer writer = new FileWriter(file)) {
             writer.write("id, type, name, status, description, epic\n");
 
             for (Task task : tasks.values()) {
@@ -29,13 +29,13 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 writer.write(toString(subtask) + "\n");
             }
         } catch (IOException e) {
-            throw  new ManagerSaveException("Ошибка при сохранении в файл ", e);
+            throw new ManagerSaveException("Ошибка при сохранении в файл ", e);
         }
     }
 
     private String toString(Task task) {
         String type;
-        if (task instanceof  Epic) {
+        if (task instanceof Epic) {
             type = "EPIC";
         } else if (task instanceof Subtask) {
             type = "SUBTASK";
@@ -58,7 +58,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         );
     }
 
-    private static  Task formString(String value) {
+    private static Task formString(String value) {
         String[] fields = value.split(",");
         int id = Integer.parseInt(fields[0]);
         String type = fields[1];
