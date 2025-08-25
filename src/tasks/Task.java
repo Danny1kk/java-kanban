@@ -6,10 +6,14 @@ public class Task {
     protected String description;
     protected TaskStatus status;
 
-    public Task(String name, String description) {
+    public Task(String name, String description, TaskStatus status) {
         this.name = name;
         this.description = description;
-        this.status = TaskStatus.NEW;
+        this.status = status == null ? TaskStatus.NEW : status;
+    }
+
+    public Task(String name, String description) {
+        this(name, description, TaskStatus.NEW);
     }
 
     public int getId() {
@@ -38,6 +42,10 @@ public class Task {
 
     public void setStatus(TaskStatus status) {
         this.status = status;
+    }
+
+    public TaskType getType() {
+        return TaskType.TASK;
     }
 
     @Override

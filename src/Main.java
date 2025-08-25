@@ -22,8 +22,8 @@ public class Main {
         manager.addEpic(epic1);
         manager.addEpic(epic2);
 
-        Subtask sub1 = new Subtask("Купить билеты", "На самолёт туда и обратно", epic1.getId());
-        Subtask sub2 = new Subtask("Собрать вещи", "Одежда", epic2.getId());
+        Subtask sub1 = new Subtask("Купить билеты", "На самолёт туда и обратно", TaskStatus.NEW, epic1.getId());
+        Subtask sub2 = new Subtask("Собрать вещи", "Одежда", TaskStatus.NEW, epic2.getId());
         manager.addSubtask(sub1);
         manager.addSubtask(sub2);
         System.out.println();
