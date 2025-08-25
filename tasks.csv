@@ -1,0 +1,4 @@
+id, type, name, status, description, epic
+2,TASK,Убраться в комнате,NEW,Убраться,
+4,EPIC,Купитьт корм для животных,IN_PROGRESS,Подготовка к отпуску,
+6,SUBTASK,Собрать вещи,IN_PROGRESS,Одежда,4
