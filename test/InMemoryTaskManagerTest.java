@@ -47,7 +47,7 @@ class InMemoryTaskManagerTest {
         Epic epic = new Epic("Эпик", "Описание");
         manager.addEpic(epic);
 
-        Subtask subtask = new Subtask("Сабтаск", "Описание", epic.getId());
+        Subtask subtask = new Subtask("Сабтаск", "Описание", TaskStatus.NEW, epic.getId());
         manager.addSubtask(subtask);
 
         Subtask retrieved = manager.getSubtask(subtask.getId());
@@ -59,7 +59,7 @@ class InMemoryTaskManagerTest {
         Epic epic = new Epic("Эпик", "Описание");
         manager.addEpic(epic);
 
-        Subtask subtask = new Subtask("Сабтаск", "Описание", epic.getId());
+        Subtask subtask = new Subtask("Сабтаск", "Описание", TaskStatus.NEW, epic.getId());
         manager.addSubtask(subtask);
 
         epic.setName("Обновлённый эпик");
@@ -85,7 +85,7 @@ class InMemoryTaskManagerTest {
         Epic epic = new Epic("Эпик", "Описание");
         manager.addEpic(epic);
 
-        Subtask subtask = new Subtask("Сабтаск", "Описание", epic.getId());
+        Subtask subtask = new Subtask("Сабтаск", "Описание", TaskStatus.NEW, epic.getId());
         manager.addSubtask(subtask);
 
         manager.removeEpic(epic.getId());
@@ -99,7 +99,7 @@ class InMemoryTaskManagerTest {
         Epic epic = new Epic("Эпик", "Описание");
         manager.addEpic(epic);
 
-        Subtask subtask = new Subtask("Сабтаск", "Описание", epic.getId());
+        Subtask subtask = new Subtask("Сабтаск", "Описание", TaskStatus.NEW, epic.getId());
         manager.addSubtask(subtask);
 
         manager.removeSubtask(subtask.getId());
