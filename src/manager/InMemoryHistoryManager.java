@@ -1,7 +1,6 @@
 package manager;
 
 import tasks.Task;
-import util.Node;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,9 +9,20 @@ import java.util.List;
 
 public class InMemoryHistoryManager implements HistoryManager {
 
-    private final Map<Integer, Node<Task>> nodeMap = new HashMap<>();
-    private Node<Task> head;
-    private Node<Task> tail;
+    private static class Node {
+        Task task;
+        Node prev;
+        Node next;
+        Node(Node prev, Task task, Node next) {
+            this.prev = prev;
+            this.task = task;
+            this.next = next;
+        }
+    }
+
+    private final Map<Integer, Node> nodeMap = new HashMap<>();
+    private Node head;
+    private Node tail;
 
     @Override
     public void add(Task task) {
@@ -24,7 +34,7 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public void remove(int id) {
-        Node<Task> node = nodeMap.remove(id);
+        Node node = nodeMap.remove(id);
         if (node != null) {
             removeNode(node);
         }
@@ -33,7 +43,7 @@ public class InMemoryHistoryManager implements HistoryManager {
     @Override
     public List<Task> getHistory() {
         List<Task> history = new ArrayList<>();
-        Node<Task> current = head;
+        Node current = head;
         while (current != null) {
             history.add(current.task);
             current = current.next;
@@ -42,7 +52,7 @@ public class InMemoryHistoryManager implements HistoryManager {
     }
 
     private void linkLast(Task task) {
-        Node<Task> newNode = new Node<>(tail, null, task);
+        Node newNode = new Node(tail, task, null);
         if (tail != null) {
             tail.next = newNode;
         } else {
@@ -52,20 +62,17 @@ public class InMemoryHistoryManager implements HistoryManager {
         nodeMap.put(task.getId(), newNode);
     }
 
-    private void removeNode(Node<Task> node) {
-        Node<Task> prev = node.prev;
-        Node<Task> next = node.next;
-
-        if (prev != null) {
-            prev.next = next;
+    private void removeNode(Node node) {
+        if (node.prev != null) {
+            node.prev.next = node.next;
         } else {
-            head = next;
+            head = node.next;
         }
 
-        if (next != null) {
-            next.prev = prev;
+        if (node.next != null) {
+            node.next.prev = node.prev;
         } else {
-            tail = prev;
+            tail = node.prev;
         }
     }
 }

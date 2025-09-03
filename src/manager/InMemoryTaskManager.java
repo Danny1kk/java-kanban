@@ -3,6 +3,8 @@ package manager;
 import tasks.*;
 
 import java.util.*;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 public class InMemoryTaskManager implements TaskManager {
     protected int nextId = 1;
@@ -14,7 +16,6 @@ public class InMemoryTaskManager implements TaskManager {
     protected void setNextId(int nextId) {
         this.nextId = nextId;
     }
-
 
     @Override
     public List<Task> getAllTasks() {
@@ -196,19 +197,37 @@ public class InMemoryTaskManager implements TaskManager {
         List<Integer> subtaskIds = epic.getSubtaskIds();
         if (subtaskIds.isEmpty()) {
             epic.setStatus(TaskStatus.NEW);
+            epic.setStartTime(null);
+            epic.setDuration(null);
+            epic.setEndTime(null);
             return;
         }
 
         boolean allNew = true;
         boolean allDone = true;
+        Duration total = Duration.ZERO;
+        LocalDateTime minStart = null;
+        LocalDateTime maxEnd = null;
 
         for (Integer id : subtaskIds) {
-            TaskStatus status = subtasks.get(id).getStatus();
-            if (status != TaskStatus.NEW) {
+            Subtask status = subtasks.get(id);
+            if (status == null) {
+                continue;
+            }
+            if (status.getStatus() != TaskStatus.NEW) {
                 allNew = false;
             }
-            if (status != TaskStatus.DONE) {
+            if (status.getStatus() != TaskStatus.DONE) {
                 allDone = false;
+            }
+            if (status.getStartTime() != null && status.getDuration() != null) {
+                LocalDateTime start = status.getStartTime();
+                LocalDateTime end = status.getEndTime();
+
+                if (minStart == null || start.isBefore(minStart)) minStart = start;
+                if (maxEnd == null || (end != null && end.isAfter(maxEnd))) maxEnd = end;
+
+                total = total.plus(status.getDuration());
             }
         }
 

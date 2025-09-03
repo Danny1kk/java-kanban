@@ -51,33 +51,25 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     public static FileBackedTaskManager loadFromFile(File file) {
         FileBackedTaskManager manager = new FileBackedTaskManager(file);
+        if (!file.exists()) return manager;
 
         try (BufferedReader br = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
-            String line = br.readLine();
-            while ((line = br.readLine()) != null && !line.isBlank()) {
+            String header = br.readLine();
+            String line;
+            while ((line = br.readLine()) != null) {
                 Task task = formString(line);
-                switch (task.getType()) {
-                    case TASK:
-                        manager.tasks.put(task.getId(), task);
-                        break;
-                    case EPIC:
-                        manager.epics.put(task.getId(), (Epic) task);
-                        break;
-                    case SUBTASK:
-                        manager.subtasks.put(task.getId(), (Subtask) task);
-                        Epic epic = manager.epics.get(((Subtask) task).getEpicId());
-                        if (epic != null) {
-                            epic.addSubtask(task.getId());
-                        }
-                        break;
+                if (task instanceof Epic) {
+                    manager.epics.put(task.getId(), (Epic) task);
+                } else if (task instanceof Subtask) {
+                    manager.subtasks.put(task.getId(), (Subtask) task);
+                } else {
+                    manager.tasks.put(task.getId(), task);
                 }
             }
 
         } catch (IOException e) {
-            throw new ManagerSaveException("Ошибка при сохранении из файла ", e);
+            throw new ManagerSaveException("Ошибка при загрузке данных ", e);
         }
-
-        manager.updateNextId();
 
         return manager;
     }
@@ -106,7 +98,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 subtask.setId(id);
                 return subtask;
             default:
-                throw new IllegalArgumentException("Неизвестный тип: " + type);
+                throw new IllegalArgumentException("Неизвестный тип задачи: " + type);
         }
     }
 
