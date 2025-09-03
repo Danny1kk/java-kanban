@@ -1,11 +1,11 @@
 package manager;
 
-import tasks.Task;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
+
+import tasks.Task;
 
 public class InMemoryHistoryManager implements HistoryManager {
 
@@ -13,6 +13,7 @@ public class InMemoryHistoryManager implements HistoryManager {
         Task task;
         Node prev;
         Node next;
+        
         Node(Node prev, Task task, Node next) {
             this.prev = prev;
             this.task = task;
