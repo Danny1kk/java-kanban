@@ -42,14 +42,24 @@ public class Task {
         return startTime.plus(duration);
     }
 
+    public Task(String name, String description) {
+        this.name = name;
+        this.description = description;
+        this.status = TaskStatus.NEW;
+    }
+
     public Task(String name, String description, TaskStatus status) {
         this.name = name;
         this.description = description;
-        this.status = status == null ? TaskStatus.NEW : status;
+        this.status = status;
     }
 
-    public Task(String name, String description) {
-        this(name, description, TaskStatus.NEW);
+    public Task(String name, String description, TaskStatus status, LocalDateTime startTime, Duration duration) {
+        this.name = name;
+        this.description = description;
+        this.status = status;
+        this.startTime = startTime;
+        this.duration = duration;
     }
 
     public int getId() {
