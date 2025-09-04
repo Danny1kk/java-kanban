@@ -4,6 +4,8 @@ import tasks.*;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
@@ -39,13 +41,18 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             epicId = String.valueOf(((Subtask) task).getEpicId());
         }
 
-        return String.format("%d,%s,%s,%s,%s,%s",
+        String startTime = (task.getStartTime() != null) ? task.getStartTime().toString() : "";
+        String duration = (task.getDuration() != null) ? String.valueOf(task.getDuration().toMinutes()) : "";
+
+        return String.format("%d,%s,%s,%s,%s,%s,%s,%s",
                 task.getId(),
                 task.getType(),
                 task.getName(),
                 task.getStatus(),
                 task.getDescription(),
-                epicId
+                epicId,
+                startTime,
+                duration
         );
     }
 
@@ -71,6 +78,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             throw new ManagerSaveException("Ошибка при загрузке данных ", e);
         }
 
+        manager.updateNextId();
+
         return manager;
     }
 
@@ -81,10 +90,15 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         String name = fields[2];
         TaskStatus status = TaskStatus.valueOf(fields[3]);
         String description = fields[4];
+        String startTimeStr = fields.length > 6 ? fields[6] : "";
+        String durationStr = fields.length > 7 ? fields[7] : "";
+
+        LocalDateTime startTime = startTimeStr.isEmpty() ? null : LocalDateTime.parse(startTimeStr);
+        Duration duration = durationStr.isEmpty() ? null : Duration.ofMinutes(Long.parseLong(durationStr));
 
         switch (type) {
             case TASK:
-                Task task = new Task(name, description, status);
+                Task task = new Task(name, description, status, startTime, duration);
                 task.setId(id);
                 return task;
             case EPIC:
@@ -94,7 +108,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 return epic;
             case SUBTASK:
                 int epicId = Integer.parseInt(fields[5]);
-                Subtask subtask = new Subtask(name, description, status, epicId);
+                Subtask subtask = new Subtask(name, description, status, epicId, startTime, duration);
                 subtask.setId(id);
                 return subtask;
             default:
