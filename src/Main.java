@@ -1,14 +1,14 @@
-import manager.FileBackedTaskManager;
+import manager.Managers;
 import manager.TaskManager;
 import tasks.*;
 
-import java.io.File;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 public class Main {
 
     public static void main(String[] args) {
-        File file = new File("tasks.csv");
-        TaskManager manager = new FileBackedTaskManager(file);
+        TaskManager manager = Managers.getDefault();
 
         System.out.println("Задачи: ");
         Task task1 = new Task("Убраться на кухне", "Убраться");
@@ -23,8 +23,13 @@ public class Main {
         manager.addEpic(epic2);
 
         Subtask sub1 = new Subtask("Купить билеты", "На самолёт туда и обратно", TaskStatus.NEW, epic1.getId());
-        Subtask sub2 = new Subtask("Собрать вещи", "Одежда", TaskStatus.NEW, epic2.getId());
+        sub1.setStartTime(LocalDateTime.now());
+        sub1.setDuration(Duration.ofHours(2));
         manager.addSubtask(sub1);
+
+        Subtask sub2 = new Subtask("Собрать вещи", "Одежда", TaskStatus.NEW, epic2.getId());
+        sub2.setStartTime(LocalDateTime.now().plusHours(3));
+        sub2.setDuration(Duration.ofHours(1));
         manager.addSubtask(sub2);
         System.out.println();
 
@@ -34,11 +39,7 @@ public class Main {
         System.out.println(manager.getAllSubtasks());
 
         System.out.println();
-        FileBackedTaskManager loaded = FileBackedTaskManager.loadFromFile(file);
         System.out.println("\nПосле загрузки из файла: ");
-        System.out.println(loaded.getAllTasks());
-        System.out.println(loaded.getAllEpics());
-        System.out.println(loaded.getAllSubtasks());
 
         System.out.println("Эпик, после добавления подзадачи: ");
         System.out.println(manager.getEpic(epic1.getId()));
@@ -71,5 +72,9 @@ public class Main {
             System.out.println(task.getName() + " (id = " + task.getId() + ")");
         }
         System.out.println();
+
+        System.out.println("Старт задачи: " + epic1.getStartTime());
+        System.out.println("Конец задачи: " + epic1.getEndTime());
+        System.out.println("Продолжительность задачи: " + epic1.getDuration());
     }
 }
