@@ -1,7 +1,6 @@
 package test;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import http.HttpTaskServer;
 import manager.InMemoryTaskManager;
 import manager.TaskManager;
@@ -10,8 +9,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import tasks.Task;
 import tasks.TaskStatus;
-import util.DurationAdapter;
-import util.LocalDateTimeAdapter;
 
 import java.io.IOException;
 import java.net.URI;
