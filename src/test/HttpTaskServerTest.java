@@ -25,18 +25,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class HttpTaskServerTest {
     private static HttpTaskServer server;
-    private static Gson gson;
+    private final Gson gson = HttpTaskServer.getGson();
     private static HttpClient client;
 
     @BeforeAll
     static void beforeAll() throws IOException {
         TaskManager manager = new InMemoryTaskManager();
-
-        gson = new GsonBuilder()
-                .registerTypeAdapter(Duration.class, new DurationAdapter())
-                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
-                .create();
-
 
         server = new HttpTaskServer(manager);
         server.start();
