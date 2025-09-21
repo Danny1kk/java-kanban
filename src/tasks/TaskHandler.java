@@ -1,7 +1,6 @@
 package tasks;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import http.BaseHttpHandler;
@@ -26,32 +25,35 @@ public class TaskHandler extends BaseHttpHandler implements HttpHandler {
 
             if ("POST".equalsIgnoreCase(method)) {
                 String body = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
-                System.out.println("Получен JSON: " + body);
+                Task task = gson.fromJson(body, Task.class);
 
-                try {
-                    Task task = gson.fromJson(body, Task.class);
-                    if (task == null) {
-                        sendText(exchange, "Некорректный JSON", 400);
-                        return;
-                    }
-
+                if (task.getId() == 0) {
                     manager.addTask(task);
-                    sendText(exchange, "Задача успешно создана", 201);
-
-                } catch (JsonSyntaxException e) {
-                    e.printStackTrace();
-                    sendText(exchange, "Ошибка парсинга JSON", 400);
+                    sendText(exchange, gson.toJson(task), 201);
+                } else {
+                    manager.updateTask(task);
+                    sendText(exchange, gson.toJson(task), 200);
                 }
 
             } else if ("GET".equalsIgnoreCase(method)) {
-                sendText(exchange, gson.toJson(manager.getAllTasks()), 200);
+                String query = exchange.getRequestURI().getQuery();
+                if (query != null && query.startsWith("id=")) {
+                    int id = Integer.parseInt(query.substring(3));
+                    Task task = manager.getTask(id);
+                    if (task != null) {
+                        sendText(exchange, gson.toJson(task), 200);
+                    } else {
+                        sendText(exchange, "Задача не найдена", 404);
+                    }
+                } else {
+                    sendText(exchange, gson.toJson(manager.getAllTasks()), 200);
+                }
 
             } else {
                 sendText(exchange, "Метод не поддерживается", 405);
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
             sendServerError(exchange, e);
         }
     }
